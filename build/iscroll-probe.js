@@ -255,6 +255,7 @@ function IScroll (el, options) {
 		scrollY: true,
 		directionLockThreshold: 5,
 		momentum: true,
+		disableMouseYAxis: true,
 
 		bounce: true,
 		bounceTime: 600,
@@ -1034,9 +1035,6 @@ IScroll.prototype = {
 			return;
 		}
 
-		e.preventDefault();
-		e.stopPropagation();
-
 		var wheelDeltaX, wheelDeltaY,
 			newX, newY,
 			that = this;
@@ -1069,7 +1067,18 @@ IScroll.prototype = {
 		wheelDeltaX *= this.options.invertWheelDirection;
 		wheelDeltaY *= this.options.invertWheelDirection;
 
-		if ( !this.hasVerticalScroll ) {
+		if ( !this.hasHorizontalScroll && this.options.eventPassthrough === 'horizontal' && !wheelDeltaY ) {
+			return;
+		}
+
+		if ( !this.hasVerticalScroll && this.options.eventPassthrough === 'vertical' && !wheelDeltaX ) {
+			return;
+		}
+		
+		e.preventDefault();
+		e.stopPropagation();
+
+		if ( !this.hasVerticalScroll && !this.options.disableMouseYAxis ) {
 			wheelDeltaX = wheelDeltaY;
 			wheelDeltaY = 0;
 		}

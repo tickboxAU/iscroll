@@ -16,9 +16,6 @@
 			return;
 		}
 
-		e.preventDefault();
-		e.stopPropagation();
-
 		var wheelDeltaX, wheelDeltaY,
 			newX, newY,
 			that = this;
@@ -51,7 +48,18 @@
 		wheelDeltaX *= this.options.invertWheelDirection;
 		wheelDeltaY *= this.options.invertWheelDirection;
 
-		if ( !this.hasVerticalScroll ) {
+		if ( !this.hasHorizontalScroll && this.options.eventPassthrough === 'horizontal' && !wheelDeltaY ) {
+			return;
+		}
+
+		if ( !this.hasVerticalScroll && this.options.eventPassthrough === 'vertical' && !wheelDeltaX ) {
+			return;
+		}
+		
+		e.preventDefault();
+		e.stopPropagation();
+
+		if ( !this.hasVerticalScroll && !this.options.disableMouseYAxis ) {
 			wheelDeltaX = wheelDeltaY;
 			wheelDeltaY = 0;
 		}
