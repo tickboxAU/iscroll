@@ -13,6 +13,7 @@ function IScroll (el, options) {
 		scrollY: true,
 		directionLockThreshold: 5,
 		momentum: true,
+		disableMouseYAxis: true,
 
 		bounce: true,
 		bounceTime: 600,
